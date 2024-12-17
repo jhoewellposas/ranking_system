@@ -55,4 +55,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function rankingApplications()
+    {
+    return $this->hasMany(RankingApplication::class);
+    }
+
 }

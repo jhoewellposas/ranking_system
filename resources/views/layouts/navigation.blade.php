@@ -5,18 +5,58 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ 
+                    Auth::user()->role == 'superadmin' ? route('superadmin.dashboard') : 
+                    (Auth::user()->role == 'admin' ? route('admin.dashboard') : 
+                    route('dashboard')) }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href=" 
+                        Auth::user()->role == 'superadmin' ? route('superadmin.dashboard') : 
+                        (Auth::user()->role == 'admin' ? route('admin.dashboard') : 
+                        route('dashboard'))
+                        " :active="        
+                        request()->routeIs(Auth::user()->role == 'superadmin' ? 'superadmin.dashboard' :
+                        (Auth::user()->role == 'admin' ? 'admin.dashboard' : 
+                        'dashboard'))
+                        ">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                <!-- User Link -->
+                @if (Auth::user()->role == 'user')
+                    <x-nav-link >
+                        {{ __('My Ranking Applications') }}
+                    </x-nav-link>
+                    <x-nav-link >
+                        {{ __('My Rank Status') }}
+                    </x-nav-link>
+                @endif
+
+                <!-- Admin Links -->
+                @if (Auth::user()->role == 'admin')
+                    <x-nav-link href="admin/teacher_profile" :active="request()->routeIs('admin.teacher_profile')">
+                        {{ __('Ranking Applications') }}
+                    </x-nav-link>
+                    <x-nav-link href="admin/ranking_summary" :active="request()->routeIs('admin.ranking_summary')">
+                        {{ __('Rank Distribution Chart') }}
+                    </x-nav-link>
+                @endif
+                
+                <!-- Super Admin Links -->
+                @if (Auth::user()->role == 'admin')
+                @endif
+
                 </div>
             </div>
+
+            
+
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
