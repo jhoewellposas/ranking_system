@@ -15,5 +15,10 @@
         </div>
     </div>
 
+    
+    <div class="container">
+    <h1>USER, {{ auth()->user()->name }}</h1>
+    
+
     </div>
 </x-app-layout>
