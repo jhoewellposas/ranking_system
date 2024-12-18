@@ -8,7 +8,7 @@
                     <a href="{{ 
                     Auth::user()->role == 'superadmin' ? route('superadmin.dashboard') : 
                     (Auth::user()->role == 'admin' ? route('admin.dashboard') : 
-                    route('dashboard')) }}">
+                    route('user.dashboard')) }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -18,11 +18,11 @@
                     <x-nav-link :href=" 
                         Auth::user()->role == 'superadmin' ? route('superadmin.dashboard') : 
                         (Auth::user()->role == 'admin' ? route('admin.dashboard') : 
-                        route('dashboard'))
+                        route('user.dashboard'))
                         " :active="        
                         request()->routeIs(Auth::user()->role == 'superadmin' ? 'superadmin.dashboard' :
                         (Auth::user()->role == 'admin' ? 'admin.dashboard' : 
-                        'dashboard'))
+                        'user.dashboard'))
                         ">
                         {{ __('Dashboard') }}
                     </x-nav-link>
