@@ -26,6 +26,11 @@ require __DIR__.'/auth.php';
 //User routes
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/user/application/create', [UserController::class, 'createUserApplication'])->name('user.createApplication');
+    Route::get('/user/applications', [UserController::class, 'showAllUserApplications'])->name('user.userApplications');
+    Route::get('/user/application/{id}', [UserController::class, 'viewApplication'])->name('user.viewApplication');
+    //extract
+    Route::post('/user/extract', [UserController::class, 'extractCertificateData'])->name('user.extractCertificateData');
 });
 
 // Admin routes

@@ -37,7 +37,7 @@
 
                 <!-- User Link -->
                 @if (Auth::user()->role == 'user')
-                    <x-nav-link >
+                    <x-nav-link href="/user/applications" :active="request()->routeIs('user.userApplications')">
                         {{ __('My Ranking Applications') }}
                     </x-nav-link>
                     <x-nav-link >
