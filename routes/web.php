@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RankDistributionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,6 +37,25 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/applications', [AdminController::class, 'showAllUsersApplications'])->name('admin.usersApplications');
+    Route::get('/admin/application/{id}', [AdminController::class, 'viewApplication'])->name('admin.viewApplication');
+    /*
+    //update teacher
+    Route::post('/teacher/update/{id}', [AdminController::class, 'updateTeacher'])->name('teachers.update');
+    //update certificate
+    Route::post('/certificate/update/{id}', [AdminController::class, 'updateCertificate'])->name('certificate.update');
+    //delete certificate
+    Route::delete('/certificate/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('certificate.delete');
+    */
+    // Update user details in a ranking application
+    Route::post('/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
+    // Update a certificate in a ranking application
+    Route::post('/certificate/update/{id}', [AdminController::class, 'updateCertificate'])->name('certificate.update');
+    // Delete a certificate in a ranking application
+    Route::delete('/certificate/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('certificate.delete');
+    //rank distribution
+    Route::get('rank-distributions', [RankDistributionController::class, 'index'])->name('rankDistributions.index');
+    Route::post('rank-distributions', [RankDistributionController::class, 'update'])->name('rankDistributions.update');
 });
 
 // Superadmin routes

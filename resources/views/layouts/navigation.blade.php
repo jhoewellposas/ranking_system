@@ -35,7 +35,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                <!-- User Link -->
+                <!-- User Links -->
                 @if (Auth::user()->role == 'user')
                     <x-nav-link href="/user/applications" :active="request()->routeIs('user.userApplications')">
                         {{ __('My Ranking Applications') }}
@@ -47,10 +47,10 @@
 
                 <!-- Admin Links -->
                 @if (Auth::user()->role == 'admin')
-                    <x-nav-link href="admin/teacher_profile" :active="request()->routeIs('admin.teacher_profile')">
+                    <x-nav-link href="/admin/applications" :active="request()->routeIs('admin.usersApplications')">
                         {{ __('Ranking Applications') }}
                     </x-nav-link>
-                    <x-nav-link href="admin/ranking_summary" :active="request()->routeIs('admin.ranking_summary')">
+                    <x-nav-link href="rank-distributions" :active="request()->routeIs('rankDistributions.index')">
                         {{ __('Rank Distribution Chart') }}
                     </x-nav-link>
                 @endif

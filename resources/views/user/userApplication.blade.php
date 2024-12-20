@@ -24,7 +24,6 @@
             <p><strong>Total Points:</strong> {{ $application->total_points }}</p>
             <p><strong>Comments:</strong> {{ $application->comments ?? 'No comments yet' }}</p>
             <p><strong>Created On:</strong> {{ $application->created_at->format('m/d/Y') }}</p>
-            <p><strong>APPLY FOR THIS RANK:</p>
         </div>
     </div>
 
