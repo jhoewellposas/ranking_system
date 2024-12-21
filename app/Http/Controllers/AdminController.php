@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+
 use App\Models\RankingApplication;
+use App\Models\RankDistribution;
 use App\Models\Certificate;
 
 class AdminController extends Controller
@@ -361,6 +363,209 @@ public function deleteCertificate($id)
     // Redirect back to the specific ranking application
     return redirect()->route('admin.viewApplication', ['id' => $rankingApplicationId])
         ->with('success', 'Certificate deleted successfully.');
+}
+
+/*
+//View ranking summary of a specific ranking application of a user
+public function viewSummary($teacherId)
+    {
+    // Find the ranking application with associated user, user details and certificates,
+    $teacher = Teacher::with('certificates')->findOrFail($teacherId);
+    $rank = $teacher->next_rank ?? 'Unknown';
+
+    // Retrieve the distribution for the rank
+    $distributions = RankDistribution::where('rank', $rank)->first([
+        'productiveGroupAPercentage',
+        'productiveGroupBPercentage',
+        'communityGroupAPercentage',
+        'communityGroupBPercentage',
+    ]) ?? [
+        'productiveGroupAPercentage' => 0.8,
+        'productiveGroupBPercentage' => 0.2,
+        'communityGroupAPercentage' => 0.7,
+        'communityGroupBPercentage' => 0.3,
+    ];
+
+    // Calculate points for Productive Scholarship categories
+    $productiveGroupAPoints = $teacher->certificates
+        ->whereIn('category', ['seminar', 'membership', 'scholarship_activities_a'])
+        ->sum('points');
+
+    $productiveGroupBPoints = $teacher->certificates
+        ->whereIn('category', ['honors_awards', 'scholarship_activities_b'])
+        ->sum('points');
+
+    // Scale Productive Scholarship Points to a maximum of 15.0
+    $productiveMaxPoints = 15.0;
+    $scaledProductiveGroupAPoints = $productiveGroupAPoints * $distributions['productiveGroupAPercentage'];
+    $scaledProductiveGroupBPoints = $productiveGroupBPoints * $distributions['productiveGroupBPercentage'];
+    $productiveScholarshipPoints = min(
+        $productiveMaxPoints,
+        $scaledProductiveGroupAPoints + $scaledProductiveGroupBPoints
+    );
+
+    // Calculate points for Community Extension Services categories of a User
+    $communityGroupAPoints = $teacher->certificates
+        ->whereIn('category', ['service_students', 'service_department', 'service_institution'])
+        ->sum('points');
+
+    $communityGroupBPoints = $teacher->certificates
+        ->whereIn('category', ['participation_organizations', 'involvement_department'])
+        ->sum('points');
+
+    // Scale Community Extension Points to a maximum of 10.0
+    $communityMaxPoints = 10.0;
+    $scaledCommunityGroupAPoints = $communityGroupAPoints * $distributions['communityGroupAPercentage'];
+    $scaledCommunityGroupBPoints = $communityGroupBPoints * $distributions['communityGroupBPercentage'];
+    $communityExtensionPoints = min(
+        $communityMaxPoints,
+        $scaledCommunityGroupAPoints + $scaledCommunityGroupBPoints
+    );
+
+    // Use User's individual performance and experience
+    $performance = $teacher->performance;
+    $experience = $teacher->experience;
+
+    // Calculate the total points
+    $totalPoints = $performance + $productiveScholarshipPoints + $experience + $communityExtensionPoints;
+
+    // Map experience to descriptive labels
+    $experienceLabels = [
+        '0.83' => '1 Year',
+        '1.666' => '2 Years',
+        '2.499' => '3 Years',
+        '3.332' => '4 Years',
+        '4.165' => '5 Years',
+        '4.998' => '6 Years',
+        '5.831' => '7 Years',
+        '6.664' => '8 Years',
+        '7.497' => '9 Years',
+        '8.33' => '10 Years',
+        '9.163' => '11 Years',
+        '10.00' => '12 Years',
+
+        // Add more mappings as needed
+    ];
+    $teacher->experienceLabel = $experienceLabels[(string)$teacher->experience] ?? 'Unknown';
+
+    // Pass data to the admin\usersSummary.blade.php or admin.viewSummary
+    return view('summary', [
+        'teacher' => $teacher,
+        'performance' => $performance,
+        'productiveScholarshipPoints' => $productiveScholarshipPoints,
+        'productiveGroupAPoints' => $productiveGroupAPoints,
+        'productiveGroupBPoints' => $productiveGroupBPoints,
+        'scaledProductiveGroupAPoints' => $scaledProductiveGroupAPoints,
+        'scaledProductiveGroupBPoints' => $scaledProductiveGroupBPoints,
+        'experience' => $experience,
+        'communityExtensionPoints' => $communityExtensionPoints,
+        'communityGroupAPoints' => $communityGroupAPoints,
+        'communityGroupBPoints' => $communityGroupBPoints,
+        'scaledCommunityGroupAPoints' => $scaledCommunityGroupAPoints,
+        'scaledCommunityGroupBPoints' => $scaledCommunityGroupBPoints,
+        'totalPoints' => $totalPoints,
+    ]);
+    }
+    */
+
+    public function viewSummary($id)
+{
+    // Find the ranking application with associated user and certificates
+    $application = RankingApplication::with(['user', 'certificates'])->findOrFail($id);
+    $user = $application->user;
+    $rank = $user->next_rank ?? 'Unknown';
+
+    // Retrieve the distribution for the rank
+    $distributions = RankDistribution::where('rank', $rank)->first([
+        'productiveGroupAPercentage',
+        'productiveGroupBPercentage',
+        'communityGroupAPercentage',
+        'communityGroupBPercentage',
+    ]) ?? [
+        'productiveGroupAPercentage' => 0.8,
+        'productiveGroupBPercentage' => 0.2,
+        'communityGroupAPercentage' => 0.7,
+        'communityGroupBPercentage' => 0.3,
+    ];
+
+    // Calculate points for Productive Scholarship categories
+    $productiveGroupAPoints = $application->certificates
+        ->whereIn('category', ['seminar', 'membership', 'scholarship_activities_a'])
+        ->sum('points');
+
+    $productiveGroupBPoints = $application->certificates
+        ->whereIn('category', ['honors_awards', 'scholarship_activities_b'])
+        ->sum('points');
+
+    // Scale Productive Scholarship Points to a maximum of 15.0
+    $productiveMaxPoints = 15.0;
+    $scaledProductiveGroupAPoints = $productiveGroupAPoints * $distributions['productiveGroupAPercentage'];
+    $scaledProductiveGroupBPoints = $productiveGroupBPoints * $distributions['productiveGroupBPercentage'];
+    $productiveScholarshipPoints = min(
+        $productiveMaxPoints,
+        $scaledProductiveGroupAPoints + $scaledProductiveGroupBPoints
+    );
+
+    // Calculate points for Community Extension Services categories
+    $communityGroupAPoints = $application->certificates
+        ->whereIn('category', ['service_students', 'service_department', 'service_institution'])
+        ->sum('points');
+
+    $communityGroupBPoints = $application->certificates
+        ->whereIn('category', ['participation_organizations', 'involvement_department'])
+        ->sum('points');
+
+    // Scale Community Extension Points to a maximum of 10.0
+    $communityMaxPoints = 10.0;
+    $scaledCommunityGroupAPoints = $communityGroupAPoints * $distributions['communityGroupAPercentage'];
+    $scaledCommunityGroupBPoints = $communityGroupBPoints * $distributions['communityGroupBPercentage'];
+    $communityExtensionPoints = min(
+        $communityMaxPoints,
+        $scaledCommunityGroupAPoints + $scaledCommunityGroupBPoints
+    );
+
+    // Use user's individual performance and experience
+    $performance = $user->performance;
+    $experience = $user->experience;
+
+    // Calculate the total points
+    $totalPoints = $performance + $productiveScholarshipPoints + $experience + $communityExtensionPoints;
+
+    // Map experience to descriptive labels
+    $experienceLabels = [
+        '0.83' => '1 Year',
+        '1.666' => '2 Years',
+        '2.499' => '3 Years',
+        '3.332' => '4 Years',
+        '4.165' => '5 Years',
+        '4.998' => '6 Years',
+        '5.831' => '7 Years',
+        '6.664' => '8 Years',
+        '7.497' => '9 Years',
+        '8.33' => '10 Years',
+        '9.163' => '11 Years',
+        '10.00' => '12 Years',
+    ];
+    $user->experienceLabel = $experienceLabels[(string)$user->experience] ?? 'Unknown';
+
+    // Pass data to the admin\usersSummary.blade.php
+    return view('admin.usersSummary', [
+        'user' => $user,
+        'application' => $application,
+        'performance' => $performance,
+        'productiveScholarshipPoints' => $productiveScholarshipPoints,
+        'productiveGroupAPoints' => $productiveGroupAPoints,
+        'productiveGroupBPoints' => $productiveGroupBPoints,
+        'scaledProductiveGroupAPoints' => $scaledProductiveGroupAPoints,
+        'scaledProductiveGroupBPoints' => $scaledProductiveGroupBPoints,
+        'experience' => $experience,
+        'communityExtensionPoints' => $communityExtensionPoints,
+        'communityGroupAPoints' => $communityGroupAPoints,
+        'communityGroupBPoints' => $communityGroupBPoints,
+        'scaledCommunityGroupAPoints' => $scaledCommunityGroupAPoints,
+        'scaledCommunityGroupBPoints' => $scaledCommunityGroupBPoints,
+        'totalPoints' => $totalPoints,
+    ]);
 }
 
 }

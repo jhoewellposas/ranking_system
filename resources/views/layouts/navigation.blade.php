@@ -50,7 +50,7 @@
                     <x-nav-link href="/admin/applications" :active="request()->routeIs('admin.usersApplications')">
                         {{ __('Ranking Applications') }}
                     </x-nav-link>
-                    <x-nav-link href="rank-distributions" :active="request()->routeIs('rankDistributions.index')">
+                    <x-nav-link href="/admin/rankdistributions" :active="request()->routeIs('rankDistributions.index')">
                         {{ __('Rank Distribution Chart') }}
                     </x-nav-link>
                 @endif

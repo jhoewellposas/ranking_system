@@ -123,7 +123,9 @@
     </div>
 </div>
 
-
+    <!-- JavaScript -->
+    <script src="{{ asset('javascript/popupwindow.js') }}"></script>
+    <script src="{{ asset('javascript/buttonConfirmations.js') }}"></script>
 
     </div>
 </x-app-layout>

@@ -18,6 +18,11 @@
         </div>
     </div>
     </div>
+    
+    <!-- View Summary Button -->
+    <div class="mb-4 view-summary">
+        <a href="{{ route('admin.viewSummary', ['id' => $application->id]) }}" class="btn btn-secondary">View Summary</a>
+    </div>
 
     <!-- User Details -->
     <div class="container">
@@ -273,7 +278,7 @@
             </tbody>
         </table>
         <div class="mb-4 view-summary-bottom">
-                <a href="" class="btn btn-secondary-bottom">View Summary</a>
+                <a href="{{ route('admin.viewSummary', ['id' => $application->id]) }}" class="btn btn-secondary-bottom">View Summary</a>
             </div>
             <form action="" method="POST" style="margin-top: 20px;">
                 @csrf

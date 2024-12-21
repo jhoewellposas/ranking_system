@@ -53,9 +53,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/certificate/update/{id}', [AdminController::class, 'updateCertificate'])->name('certificate.update');
     // Delete a certificate in a ranking application
     Route::delete('/certificate/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('certificate.delete');
+    //summary
+    Route::get('admin/summary/{id}', [AdminController::class, 'viewSummary'])->name('admin.viewSummary');
+
     //rank distribution
-    Route::get('rank-distributions', [RankDistributionController::class, 'index'])->name('rankDistributions.index');
-    Route::post('rank-distributions', [RankDistributionController::class, 'update'])->name('rankDistributions.update');
+    Route::get('admin/rankdistributions', [RankDistributionController::class, 'index'])->name('rankDistributions.index');
+    Route::post('admin/rankdistributions', [RankDistributionController::class, 'update'])->name('rankDistributions.update');
 });
 
 // Superadmin routes
