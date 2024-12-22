@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-[#379EFF] border-b border-gray-100 sticky top-0 z-10 print:hidden">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -9,12 +9,12 @@
                     Auth::user()->role == 'superadmin' ? route('superadmin.dashboard') : 
                     (Auth::user()->role == 'admin' ? route('admin.dashboard') : 
                     route('user.dashboard')) }}" class="flex items-center space-x-3">
-                    <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-12 w-12 fill-current text-gray-800" />
                         <div class="text-left">
-                            <h1 class="text-xl font-bold text-gray-800 leading-tight">
+                            <h1 class="text-xl font-bold text-white leading-tight">
                                 FSUU
                             </h1>
-                            <p class="text-sm font-medium text-gray-600">
+                            <p class="text-sm font-medium text-white">
                                 Ranking System
                             </p>
                         </div>
@@ -40,7 +40,7 @@
                     <x-nav-link href="/user/applications" :active="request()->routeIs('user.userApplications')">
                         {{ __('My Ranking Applications') }}
                     </x-nav-link>
-                    <x-nav-link >
+                    <x-nav-link>
                         {{ __('My Rank Status') }}
                     </x-nav-link>
                 @endif
@@ -54,17 +54,8 @@
                         {{ __('Rank Distribution Chart') }}
                     </x-nav-link>
                 @endif
-                
-                <!-- Super Admin Links -->
-                @if (Auth::user()->role == 'admin')
-                @endif
-
                 </div>
             </div>
-
-            
-
-
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

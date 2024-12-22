@@ -14,9 +14,16 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Styles -->
+        <style>
+            body::-webkit-scrollbar {
+              display: none; /* Hides scrollbar for WebKit browsers */
+            }
+          </style>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="main-display font-sans antialiased overflow-auto">
+        <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -34,7 +41,7 @@
             </main>
         </div>
         <footer class="bg-white shadow mt-8">
-            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center print:hidden">
                 &copy; {{ date('Y') }} FSUU Ranking System. All rights reserved.
             </div>
         </footer>

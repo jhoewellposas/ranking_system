@@ -1,0 +1,107 @@
+.fsuu-logo-container {
+    text-align: left;
+    padding: 20px;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.fsuu-logo-container .logo {
+    height: 80px;
+}
+
+.fsuu-logo-container .main-title, .fsuu-logo-container .subtitle {
+    margin: 0;
+    color: black;
+}
+
+.fsuu-logo-container .main-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.fsuu-logo-container .subtitle {
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+.signature-form {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-gap: 50px;
+    row-gap: 40px;
+    page-break-inside: avoid;
+}
+
+.grid-item {
+    text-align: left;
+    font-size: 16px;
+    padding: 5px 10px;
+    page-break-inside: avoid;
+}
+
+/* .grid-item:nth-child(17), .president {
+    grid-column: 1 / 2;
+    text-align: left;
+} */
+
+/* .president {
+    margin-left: 60%;
+    margin-top: -20px;
+} */
+
+
+.name-signature1, .name-signature2, .name-signature3, .approved-container, .approved-date-container, .prepared-by-container {
+    position: relative;
+    margin-bottom: 40px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.name-signature1::before, .name-signature2::before, .name-signature3::before, .approved-container::before, .approved-date-container::before, .prepared-by-container::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 300px;
+    border-top: 1px solid #000;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* .grid-item:nth-child(19) {
+    grid-column: 3 / 4;
+    text-align: right;
+} */
+
+.centered {
+    text-align: center;
+    font-weight: bold;
+    margin: 40px 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
