@@ -1,9 +1,8 @@
 <x-app-layout>
-
     <link rel="stylesheet" type="text/css" href="{{ asset('styling/summary.css')}}">
     {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Faculty Dashboard') }}
+            {{ __('Admin Dashboard') }}
         </h2>
     </x-slot> --}}
     

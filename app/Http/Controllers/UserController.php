@@ -361,4 +361,42 @@ public function extractCertificateData(Request $request)
         'teacher_id' => $teacherId, // Pass teacher_id for default selection
     ]);
     }
+
+    // Displays user details of the current user
+    public function viewSummary()
+{
+    // Get the currently authenticated user
+    $user = auth()->user();
+
+    // Retrieve user's next rank
+    $rank = $user->next_rank ?? 'Unknown';
+
+    // Use user's individual performance and experience
+    $performance = $user->performance;
+    $experience = $user->experience;
+
+    // Map experience to descriptive labels
+    $experienceLabels = [
+        '0.83' => '1 Year',
+        '1.666' => '2 Years',
+        '2.499' => '3 Years',
+        '3.332' => '4 Years',
+        '4.165' => '5 Years',
+        '4.998' => '6 Years',
+        '5.831' => '7 Years',
+        '6.664' => '8 Years',
+        '7.497' => '9 Years',
+        '8.33' => '10 Years',
+        '9.163' => '11 Years',
+        '10.00' => '12 Years',
+    ];
+    $user->experienceLabel = $experienceLabels[(string)$user->experience] ?? 'Unknown';
+
+    // Pass data to the user\userSummary.blade.php
+    return view('user.userSummary', [
+        'user' => $user,
+        'performance' => $performance,
+        'experience' => $experience,
+    ]);
+}
 }

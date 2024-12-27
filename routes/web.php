@@ -32,6 +32,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/application/{id}', [UserController::class, 'viewApplication'])->name('user.viewApplication');
     //extract
     Route::post('/user/extract', [UserController::class, 'extractCertificateData'])->name('user.extractCertificateData');
+    //summary
+    Route::get('/user/summary', [UserController::class, 'viewSummary'])->name('user.viewSummary');
 });
 
 // Admin routes

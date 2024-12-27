@@ -40,7 +40,7 @@
                     <x-nav-link href="/user/applications" :active="request()->routeIs('user.userApplications')">
                         {{ __('My Ranking Applications') }}
                     </x-nav-link>
-                    <x-nav-link>
+                    <x-nav-link href="/user/summary" :active="request()->routeIs('user.viewSummary')">
                         {{ __('My Rank Status') }}
                     </x-nav-link>
                 @endif
