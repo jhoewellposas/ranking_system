@@ -321,6 +321,7 @@ private function getHigherRequirements()
     }
     */
 
+//Update user details of a user of a specific ranking application
     public function updateUser(Request $request, $id)
 {
     // Find the user
@@ -329,13 +330,20 @@ private function getHigherRequirements()
     // Update user details
     $user->update($request->only('name', 'acad_attainment', 'performance', 'date_hired', 'office', 'experience', 'present_rank', 'next_rank'));
 
+    /*
     // Redirect back to the specific ranking application
     $rankingApplication = RankingApplication::where('user_id', $id)->firstOrFail();
+    */
 
-    return redirect()->route('admin.viewApplication', ['id' => $rankingApplication->id])
+    // Get the ranking application ID from the request
+    $rankingApplicationId = $request->input('ranking_application_id');
+
+    // Redirect back to the specific ranking application
+    return redirect()->route('admin.viewApplication', ['id' => $rankingApplicationId])
         ->with('success', 'User updated successfully.');
 }
 
+//update certificate data of a specific ranking application
 public function updateCertificate(Request $request, $id)
 {
     // Find the certificate
@@ -349,6 +357,7 @@ public function updateCertificate(Request $request, $id)
         ->with('success', 'Certificate updated successfully.');
 }
 
+//update certificate data of a specific ranking application
 public function deleteCertificate($id)
 {
     // Find the certificate

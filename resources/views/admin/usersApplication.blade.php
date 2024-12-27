@@ -50,6 +50,7 @@
         <!-- Display User's Information -->
         <form action="{{ route('user.update', ['id' => $application->user->id]) }}" method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @csrf
+            <input type="hidden" name="ranking_application_id" value="{{ $application->id }}">
             <!-- Name -->
             <div>
                 <label for="name" class="text-sm font-semibold block mb-1">Name</label>

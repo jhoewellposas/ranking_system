@@ -60,7 +60,7 @@
                 <table class="min-w-full border border-gray-200">
                     <thead class="bg-gray-100">
                         <tr class="border-t border-gray-200 text-center">
-                            <th class="px-4 py-2 text-gray-700 font-medium">Category</th>
+                            <!-- <th class="px-4 py-2 text-gray-700 font-medium">Category</th> -->
                             <th class="px-4 py-2 text-gray-700 font-medium">Type</th>
                             <th class="px-4 py-2 text-gray-700 font-medium">Title</th>
                             <th class="px-4 py-2 text-gray-700 font-medium">Organization/Sponsor</th>
@@ -74,7 +74,7 @@
                     <tbody>
                         @forelse ($certificates as $certificate)
                             <tr class="border-t border-gray-200 text-center">
-                                <td class="px-4 py-2">{{ $certificate->category }}</td>
+                                <!-- <td class="px-4 py-2">{{ $certificate->category }}</td> -->
                                 <td class="px-4 py-2">{{ $certificate->type }}</td>
                                 <td class="px-4 py-2">{{ $certificate->title }}</td>
                                 <td class="px-4 py-2">{{ $certificate->organization }}</td>

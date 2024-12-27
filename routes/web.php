@@ -41,14 +41,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/applications', [AdminController::class, 'showAllUsersApplications'])->name('admin.usersApplications');
     Route::get('/admin/application/{id}', [AdminController::class, 'viewApplication'])->name('admin.viewApplication');
-    /*
-    //update teacher
-    Route::post('/teacher/update/{id}', [AdminController::class, 'updateTeacher'])->name('teachers.update');
-    //update certificate
-    Route::post('/certificate/update/{id}', [AdminController::class, 'updateCertificate'])->name('certificate.update');
-    //delete certificate
-    Route::delete('/certificate/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('certificate.delete');
-    */
     // Update user details in a ranking application
     Route::post('/user/update/{id}', [AdminController::class, 'updateUser'])->name('user.update');
     // Update a certificate in a ranking application
@@ -57,7 +49,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/certificate/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('certificate.delete');
     //summary
     Route::get('admin/summary/{id}', [AdminController::class, 'viewSummary'])->name('admin.viewSummary');
-
     //rank distribution
     Route::get('admin/rankdistributions', [RankDistributionController::class, 'index'])->name('rankDistributions.index');
     Route::post('admin/rankdistributions', [RankDistributionController::class, 'update'])->name('rankDistributions.update');
