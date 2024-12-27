@@ -1,14 +1,14 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
             {{ __('Faculty Dashboard') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <!-- Ranking Applications Section -->
     <div class="flex flex-col items-center justify-center min-h-screen">
         <div class="w-full max-w-4xl px-4 py-6 bg-white rounded-lg">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Your Ranking Applications</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">My Ranking Applications</h2>
 
             <!-- Success Message -->
             @if (session('success'))

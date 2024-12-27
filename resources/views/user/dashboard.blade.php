@@ -5,16 +5,16 @@
         </h2>
     </x-slot>
     
-    <div class="container text-center">
-    <h2>Welcome, {{ auth()->user()->name }}</h2>
+    <div class="container mx-auto text-center px-4 py-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Welcome, {{ auth()->user()->name }}</h2>
+    
+        <div class="mt-4">
+            <!-- Apply for Ranking Button -->
+            <a href="{{ route('user.createApplication') }}"
+               class="inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                Apply for Ranking
+            </a>
+        </div>
+    </div>    
 
-    <div class="mt-4">
-        <!-- Apply for Ranking Button -->
-        <a href="{{ route('user.createApplication') }}" class="btn btn-primary">
-            Apply for Ranking
-        </a>
-    </div>
-</div>
-
-    </div>
 </x-app-layout>

@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Admin Dashboard') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <!-- Container for centering the content -->
     <div class="flex flex-col items-center justify-center min-h-screen">
@@ -40,7 +40,7 @@
                 </div>
             @else
                 <!-- No Applications Message -->
-                <p class="text-gray-600 text-center">You have not submitted any applications yet.</p>
+                <p class="text-gray-600 text-center">No applications being submitted yet.</p>
             @endif
         </div>
     </div>
