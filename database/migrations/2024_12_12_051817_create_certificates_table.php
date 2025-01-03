@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('days')->nullable();
             $table->string('date');
             $table->text('raw_text');
+            $table->string('image_path')->nullable(); // Add image path column
             $table->float('points')->nullable();
             $table->timestamps();
 

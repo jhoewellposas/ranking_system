@@ -19,6 +19,7 @@ class Certificate extends Model
         'days',
         'date',
         'raw_text',
+        'image_path',
         'points',
         'ranking_application_id'//
         ];

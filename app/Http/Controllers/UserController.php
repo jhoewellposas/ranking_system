@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+
 use App\Models\RankingApplication;
 use App\Models\Certificate;
+
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use OpenAI;
 
@@ -82,39 +84,35 @@ class UserController extends Controller
     // Return the view with application and certificate data
     return view('user.userApplication', compact('application', 'certificates', 'query'));
 }
-
-
-    /**
-     * Uploads certificates and extracts certificate data.
-     */
     /*
+    //Uploads certificates and extracts certificate data.
     public function extractCertificateData(Request $request)
     {
         // Step 1: Validate and save the uploaded files
         $request->validate([
             'certificates.*' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validate multiple files
-            'teacher_id' => 'required|exists:teachers,id', // Validate teacher_id
+            'ranking_application_id' => 'required|exists:ranking_applications,id', // Validate application ID
         ]);
-    
+
         $certificates = $request->file('certificates');
-        $teacherId = $request->input('teacher_id');
-    
+        $applicationId = $request->input('ranking_application_id');
+
         foreach ($certificates as $certificate) {
             $path = $certificate->store('certificates', 'public');
             $processedImagePath = storage_path("app/public/{$path}");
-    
+
             // Step 2: Perform OCR on the processed image
             $tesseract = new TesseractOCR($processedImagePath);
             $text = $tesseract->run();
-    
+
             if (empty($text)) {
                 return back()->with('error', "Failed to extract text from certificate: {$certificate->getClientOriginalName()}");
             }
-    
+
             // Step 3: Use OpenAI API to extract details
             $openaiApiKey = env('OPENAI_API_KEY'); // Add your API key to the .env file
             $openai = OpenAI::client($openaiApiKey);
-    
+
             $response = $openai->chat()->create([
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
@@ -128,15 +126,15 @@ class UserController extends Controller
                     ],
                 ],
             ]);
-    
+
             $output = $response['choices'][0]['message']['content'] ?? '';
-    
+
             // Parse OpenAI response
             $parsedData = json_decode($output, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return back()->with('error', "Failed to parse OpenAI response for certificate: {$certificate->getClientOriginalName()}");
             }
-    
+
             // Categorize Certificates
             $category = $this->categorizeCertificate($text);
 
@@ -153,19 +151,20 @@ class UserController extends Controller
                 'days' => is_numeric($parsedData['days']) ? $parsedData['days'] : 0,
                 'date' => $parsedData['date'] ?? 'Unknown',
                 'category' => $category,
-                'points' => $points, 
+                'points' => $points,
                 'raw_text' => $text,
-                'teacher_id' => $teacherId,
+                'image_path' => $path, // Save relative path of the image
+                'ranking_application_id' => $applicationId, // Associate with ranking application
             ];
-    
+
             Certificate::create($data);
         }
-    
-        // Step 5: Redirect to the profile page with success message
-        return redirect()->route('profile', ['teacher_id' => $teacherId])
+
+        // Step 5: Redirect to the userApplication.blade.php/user.viewApplication page with success message
+        return redirect()->route('user.viewApplication', ['id' => $applicationId])
             ->with('success', 'Certificates uploaded and processed successfully.');
     }
-    
+
     private function categorizeCertificate($text)
     {
     $text = strtolower($text);
@@ -217,7 +216,7 @@ class UserController extends Controller
     {
         $scores = [
             'seminar' => 5.0,
-            'honors_awards' => 1.0,
+            'honors_awards' => 1.0,//
             'membership' => 2.0,
             'scholarship_activities_a' => 2.0,
             'scholarship_activities_b' => 2.0,
@@ -230,13 +229,9 @@ class UserController extends Controller
 
         return $scores[$category] ?? 0.0; // Default to 0.0 if the category doesn't match
     }
-
     */
 
-    /**
- * Uploads certificates and extracts certificate data.
- */
-public function extractCertificateData(Request $request)
+    public function extractCertificateData(Request $request)
 {
     // Step 1: Validate and save the uploaded files
     $request->validate([
@@ -259,7 +254,7 @@ public function extractCertificateData(Request $request)
             return back()->with('error', "Failed to extract text from certificate: {$certificate->getClientOriginalName()}");
         }
 
-        // Step 3: Use OpenAI API to extract details
+        // Step 3: Use OpenAI API to extract details, categorize, and score
         $openaiApiKey = env('OPENAI_API_KEY'); // Add your API key to the .env file
         $openai = OpenAI::client($openaiApiKey);
 
@@ -268,11 +263,44 @@ public function extractCertificateData(Request $request)
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are a helpful assistant that extracts structured data from certificate text.',
+                    'content' => 'You are a helpful assistant that extracts structured data from certificate text, categorizes the certificate, and assigns a score based on its category.',
                 ],
                 [
                     'role' => 'user',
-                    'content' => "Extract the following details from this certificate text:\n\nText: {$text}\n\n1. Type of certificate\n2. Name of recipient\n3. Title of event\n4. Name of organization or sponsor\n5. Designation or role of recipient\n6. Count the number of days of the event\n7. Date of the event\n\nReturn the data in JSON format with keys: type, name, title, organization, designation, days and date.",
+                    'content' => "Extract the following details from this certificate text:\n\nText: {$text}\n\n1. Type of certificate\n2. Name of recipient\n3. Title of event\n4. Name of organization or sponsor\n5. Designation or role of recipient\n6. Count the number of days of the event\n7. Date of the event\n
+                    \nBased on the text, categorize the certificate into one of the following categories:
+                    [seminar, honors_awards, membership, scholarship_activities_a, scholarship_activities_b, service_students, service_department, service_institution, participation_organizations, involvement_department, unknown].
+
+                    Assign a score to the certificate based on its category using these rules:
+                    - **seminar**: Special Training: 5.0; Seminar: 0.25 for every half a day (assume 4 hours per half-day if not explicitly mentioned).
+                    - **honors_awards**: 1.0.
+                    - **membership**: Officer with more than 2 organizations: 2.0; Officer with 2 or fewer organizations: 1.0; Member with more than 2 organizations: 1.0; Member with 2 or fewer organizations: 0.5.
+                    - **scholarship_activities_a**: Author of workbook/instructional aids: 3.0; Adviser: 3.0; Panelist: 2.0.
+                    - **scholarship_activities_b**: Author of book: 6.0; Researcher: 6.0; Speaker, Coach, Trainer, Consultant: 2.0.
+                    - **service_students**: 1.5.
+                    - **service_department**: 2.5.
+                    - **service_institution**: 1.0.
+                    - **participation_organizations**: 2.5.
+                    - **involvement_department**: 
+                    - President of organization, club, etc.: 1.0.
+                    - Resource Speaker, Lecturer, Trainer, Coach, Organizer (community movement, etc.): 0.75.
+                    - Other Officers of an organization, club, etc.: 0.3.
+                    - Member of an organization, club, etc.: 0.2.
+                    - Judge: 0.25.
+                    - **unknown**: 0.0.
+                    
+                    Return the extracted data, category, and score in the following JSON format:
+                    {
+                        \"type\": \"\",
+                        \"name\": \"\",
+                        \"title\": \"\",
+                        \"organization\": \"\",
+                        \"designation\": \"\",
+                        \"days\": \"\",
+                        \"date\": \"\",
+                        \"category\": \"\",
+                        \"score\": \"\"
+                    }",
                 ],
             ],
         ]);
@@ -285,12 +313,6 @@ public function extractCertificateData(Request $request)
             return back()->with('error', "Failed to parse OpenAI response for certificate: {$certificate->getClientOriginalName()}");
         }
 
-        // Categorize Certificates
-        //$category = $this->categorizeCertificate($text);
-
-        // Give Points
-        //$points = $this->scoreCertificate($category);
-
         // Step 4: Prepare and save the extracted data
         $data = [
             'type' => $parsedData['type'] ?? 'Unknown',
@@ -300,9 +322,10 @@ public function extractCertificateData(Request $request)
             'designation' => $parsedData['designation'] ?? 'Unknown',
             'days' => is_numeric($parsedData['days']) ? $parsedData['days'] : 0,
             'date' => $parsedData['date'] ?? 'Unknown',
-            //'category' => $category,
-            //'points' => $points,
+            'category' => $parsedData['category'] ?? 'unknown',
+            'points' => $parsedData['score'] ?? 0.0,
             'raw_text' => $text,
+            'image_path' => $path, // Save relative path of the image
             'ranking_application_id' => $applicationId, // Associate with ranking application
         ];
 
@@ -312,54 +335,25 @@ public function extractCertificateData(Request $request)
     // Step 5: Redirect to the userApplication.blade.php/user.viewApplication page with success message
     return redirect()->route('user.viewApplication', ['id' => $applicationId])
         ->with('success', 'Certificates uploaded and processed successfully.');
-}
+    }
 
-    public function showCertificates(Request $request)
+    public function deleteCertificate($id)
     {
-    $query = $request->input('query');
-    $teacherId = $request->input('teacher_id');
-
-    // Initialize the certificate query
-    $certificateQuery = Certificate::query();
-
-    // Filter by search query if provided
-    if ($query) {
-        $certificateQuery->where(function ($q) use ($query) {
-            $q->where('id', 'like', "%{$query}%")
-            ->orWhere('category', 'like', "%{$query}%")
-            ->orWhere('type', 'like', "%{$query}%")
-            ->orWhere('name', 'like', "%{$query}%")
-            ->orWhere('title', 'like', "%{$query}%")
-            ->orWhere('organization', 'like', "%{$query}%")
-            ->orWhere('designation', 'like', "%{$query}%")
-            ->orWhere('date', 'like', "%{$query}%")
-            ->orWhere('raw_text', 'like', "%{$query}%")
-            ->orWhere('points', 'like', "%{$query}%");
-        });
-    }
-
-    // Filter by teacher_id if a teacher is selected
-    if ($teacherId) {
-        $certificateQuery->where('teacher_id', $teacherId);
-        $selectedTeacher = Teacher::findOrFail($teacherId); // Get the teacher's details
-    } else {
-        $selectedTeacher = null;
-    }
-
-    // Get certificates of user
-    $allCertificates = $certificateQuery->get();
-
-    // Retrieve all teachers for the dropdown
-    $allTeachers = Teacher::all();
-
-    // Return view to userApplication.blade.php/user.viewApplication
-    return view('profile', [
-        'allCertificates' => $allCertificates,
-        'allTeachers' => $allTeachers,
-        'selectedTeacher' => $selectedTeacher, // Pass selected teacher's details
-        'query' => $query,
-        'teacher_id' => $teacherId, // Pass teacher_id for default selection
-    ]);
+        // Find the certificate
+        $certificate = Certificate::findOrFail($id);
+        
+        // Get the associated ranking application ID before deletion
+        $rankingApplicationId = $certificate->ranking_application_id;
+    
+        // Delete the certificate
+        $certificate->delete();
+    
+        // Delete the image file
+        Storage::disk('public')->delete($certificate->image_path);
+    
+        // Redirect back to the specific ranking application
+        return redirect()->route('user.viewApplication', ['id' => $rankingApplicationId])
+            ->with('success', 'Certificate deleted successfully.');
     }
 
     // Displays user details of the current user

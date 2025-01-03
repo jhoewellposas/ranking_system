@@ -1,10 +1,4 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot> --}}
-    
     <!-- View Summary Button -->
     <div class="flex justify-end items-center mt-6 px-4 sm:px-6 lg:px-8">
         <a href="{{ route('admin.viewSummary', ['id' => $application->id]) }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">View Summary</a>
@@ -18,6 +12,10 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
                     <p class="text-gray-700"><strong>Email:</strong> {{ $application->user->email }}</p>
                     <p class="text-gray-700"><strong>Application Status:</strong> 
+                        <select name="status" id="status">
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
                         <span class="capitalize text-{{ $application->status === 'approved' ? 'green-600' : ($application->status === 'pending' ? 'yellow-600' : 'red-600') }}">
                             {{ ucfirst($application->status) }}
                         </span>
@@ -25,19 +23,12 @@
                     <p class="text-gray-700"><strong>Comments:</strong> {{ $application->comments ?? 'No comments yet' }}</p>
                     <p class="text-gray-700"><strong>Created On:</strong> {{ $application->created_at->format('m/d/Y') }}</p>
                 </div>
-            </div>            
+            </div>
     
             <!-- User Details -->
             <div class="bg-white shadow-md rounded-lg p-6 flex flex-col">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">User Details</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
-                    <p class="text-gray-700"><strong>Academic Attainment:</strong> {{ $user->acad_attainment }}</p>
-                    <p class="text-gray-700"><strong>Date Hired:</strong> {{ $user->date_hired }}</p>
-                    <p class="text-gray-700"><strong>Office:</strong> {{ $user->office }}</p>
-                    <p class="text-gray-700"><strong>Performance:</strong> {{ $user->performance }}</p>
-                    <p class="text-gray-700"><strong>Experience:</strong> {{ $user->experience }}</p>
-                    <p class="text-gray-700"><strong>Present Rank:</strong> {{ $user->present_rank }}</p>
-                    <p class="text-gray-700"><strong>Next Rank:</strong> {{ $user->next_rank }}</p>
                 </div>
             </div>
         </div>
@@ -262,6 +253,7 @@
                         <th class="border border-gray-300 px-2 py-2 w-24">Number of Days</th>
                         <th class="border border-gray-300 px-4 py-2">Inclusive Date</th>
                         {{-- <th class="border border-gray-300 px-2 py-2 w-24">OCR Output</th> --}}
+                        <th class="border border-gray-300 px-2 py-2 w-20">Image</th>
                         <th class="border border-gray-300 px-2 py-2 w-20">Points</th>
                         <th class="border border-gray-300 px-4 py-2">Actions</th>
                     </tr>
@@ -298,6 +290,13 @@
                                     <input type="text" name="days" value="{{ $certificate->days }}" required class="w-full rounded px-2 py-1 border-none focus:outline-none focus:ring focus:ring-blue-300 text-center">
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2"><textarea name="designation" class="w-full rounded p-1 border-none focus:outline-none focus:ring focus:ring-blue-300 resize-none">{{ $certificate->date }}</textarea></td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <button type="button" 
+                                            class="px-2 py-1 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700" 
+                                            onclick="window.open('{{ asset('storage/' . $certificate->image_path) }}', '_blank')">
+                                        View Image
+                                    </button>
+                                </td>
                                 {{-- <td class="border border-gray-300 px-2 py-2 w-24">
                                     <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 focus:ring focus:ring-blue-300" data-ocr="{{ $certificate->raw_text }}">View OCR Output</button>
                                 </td> --}}
