@@ -37,7 +37,7 @@
         <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Uploaded Certificates</h3>
             <form method="GET" action="{{ route('user.viewApplication', $application->id) }}" class="mb-4 flex flex-col sm:flex-row gap-4 ml-auto justify-end">
-                <input type="text" name="query" value="{{ $query }}" placeholder="Search certificates..." class="block w-1/2 max-w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                <input type="text" name="query" value="{{ $query }}" placeholder="Search certificates..." class="block w-full max-w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700">Search</button>
             </form>
             <div class="overflow-x-auto">
@@ -51,7 +51,7 @@
                             <th class="px-4 py-2 text-gray-700 font-medium">Designation</th>
                             <th class="px-4 py-2 text-gray-700 font-medium">Number of Days</th>
                             <th class="px-4 py-2 text-gray-700 font-medium">Inclusive Date</th>
-                            <th class="px-4 py-2 text-gray-700 font-medium w-24">Image</th>
+                            {{-- <th class="px-4 py-2 text-gray-700 font-medium w-24">Image</th> --}}
                             <th class="px-4 py-2 text-gray-700 font-medium w-24">Points</th>
                             <th class="px-4 py-2 text-gray-700 font-medium w-24">Actions</th>
                         </tr>
@@ -66,16 +66,18 @@
                                 <td class="px-4 py-2">{{ $certificate->designation }}</td>
                                 <td class="px-4 py-2">{{ $certificate->days }}</td>
                                 <td class="px-4 py-2">{{ $certificate->date }}</td>
-                                <td class="px-4 py-2">
-                                    <button type="button" 
-                                            class="px-2 py-1 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700" 
-                                            onclick="window.open('{{ asset('storage/' . $certificate->image_path) }}', '_blank')">
-                                        View Image
-                                    </button>
-                                </td>
+                                {{-- <td class="px-4 py-2">
+                                    
+                                </td> --}}
                                 <td class="px-4 py-2">{{ $certificate->points }}</td>
                                 <td class="px-4 py-2 w-24">
                                     <div class="flex flex-col space-y-2">
+                                        <button type="button" 
+                                            class="px-2 py-1 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700" 
+                                            onclick="openPopup(this.getAttribute('data-url'))"
+                                            data-url="{{ asset('storage/' . $certificate->image_path) }}">
+                                            View Image
+                                        </button>
                                         <form action="" method="POST">
                                             @csrf
                                             @method('PUT')
@@ -118,7 +120,7 @@
     
 
     <!-- JavaScript -->
-    <script src="{{ asset('javascript/popupwindow.js') }}"></script>
+    <script src="{{ asset('javascript/imagepop.js') }}"></script>
     <script src="{{ asset('javascript/buttonConfirmations.js') }}"></script>
 
     </div>

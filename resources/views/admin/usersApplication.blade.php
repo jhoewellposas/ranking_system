@@ -4,21 +4,19 @@
         <a href="{{ route('admin.viewSummary', ['id' => $application->id]) }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">View Summary</a>
     </div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    {{-- <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
             <!-- Application Details -->
             <div class="bg-white shadow-md rounded-lg p-6 flex flex-col">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Ranking Application #{{ $application->id }}</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
                     <p class="text-gray-700"><strong>Email:</strong> {{ $application->user->email }}</p>
-                    <p class="text-gray-700"><strong>Application Status:</strong> 
-                        <select name="status" id="status">
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
+                    <p class="text-gray-700">
+                        <strong>Application Status:</strong> 
+                        <select name="status" id="status" class="border-none focus:ring-0 focus:outline-none {{ $application->status === 'approved' ? 'text-green-600' : ($application->status === 'pending' ? 'text-yellow-600' : 'text-red-600') }}">
+                            <option value="pending" {{ $application->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ $application->status === 'approved' ? 'selected' : '' }}>Approved</option>
                         </select>
-                        <span class="capitalize text-{{ $application->status === 'approved' ? 'green-600' : ($application->status === 'pending' ? 'yellow-600' : 'red-600') }}">
-                            {{ ucfirst($application->status) }}
-                        </span>
                     </p>
                     <p class="text-gray-700"><strong>Comments:</strong> {{ $application->comments ?? 'No comments yet' }}</p>
                     <p class="text-gray-700"><strong>Created On:</strong> {{ $application->created_at->format('m/d/Y') }}</p>
@@ -32,12 +30,41 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     
     <!-- User Ranking Application -->
-<div class="user-table-info container mx-auto p-4">
+{{-- <div class="user-table-info container mx-auto p-4"> --}}
     <div class="teacher-info bg-white shadow-md rounded-lg p-6">
-        <h1 class="text-xl font-bold mb-6 text-center">USER'S RANKING APPLICATION</h1>
+        <!-- Application Details -->
+        <div class="bg-white rounded-lg p-6 flex flex-col">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Ranking Application #{{ $application->id }}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 flex-grow">
+                <div class="text-gray-700">
+                    <strong>Email:</strong> <span>{{ $application->user->email }}</span>
+                </div>
+                <div class="text-gray-700">
+                    <strong>Created On:</strong> <span>{{ $application->created_at->format('m/d/Y') }}</span>
+                </div>
+                <div class="text-gray-700 flex items-center">
+                    <strong>Application Status:</strong>
+                    <div class="ml-4 flex items-center">
+                        <label class="flex items-center mr-4">
+                            <input type="radio" name="status" value="pending" class="text-yellow-600 focus:ring-yellow-500 border-gray-300" {{ $application->status === 'pending' ? 'checked' : '' }}>
+                            <span class="ml-2 text-gray-700">Pending</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="status" value="approved" class="text-green-600 focus:ring-green-500 border-gray-300" {{ $application->status === 'approved' ? 'checked' : '' }}>
+                            <span class="ml-2 text-gray-700">Approved</span>
+                        </label>
+                    </div>
+                </div>                               
+                <div class="flex items-start space-x-4">
+                    <strong class="mt-1">Comments:</strong>
+                    <textarea name="comments" id="comments" class="flex-1 form-textarea mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" rows="3">{{ $application->comments ?? '' }}</textarea>
+                </div>                
+            </div>            
+        </div>
+        {{-- <h1 class="text-xl font-bold mb-6 text-center">USER'S RANKING APPLICATION</h1> --}}
         <!-- Display User's Information -->
         <form action="{{ route('user.update', ['id' => $application->user->id]) }}" method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @csrf
@@ -224,7 +251,7 @@
             </div>
         </form>
     </div>
-</div>
+{{-- </div> --}}
 
 
 
@@ -253,7 +280,7 @@
                         <th class="border border-gray-300 px-2 py-2 w-24">Number of Days</th>
                         <th class="border border-gray-300 px-4 py-2">Inclusive Date</th>
                         {{-- <th class="border border-gray-300 px-2 py-2 w-24">OCR Output</th> --}}
-                        <th class="border border-gray-300 px-2 py-2 w-20">Image</th>
+                        {{-- <th class="border border-gray-300 px-2 py-2 w-20">Image</th> --}}
                         <th class="border border-gray-300 px-2 py-2 w-20">Points</th>
                         <th class="border border-gray-300 px-4 py-2">Actions</th>
                     </tr>
@@ -290,13 +317,9 @@
                                     <input type="text" name="days" value="{{ $certificate->days }}" required class="w-full rounded px-2 py-1 border-none focus:outline-none focus:ring focus:ring-blue-300 text-center">
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2"><textarea name="designation" class="w-full rounded p-1 border-none focus:outline-none focus:ring focus:ring-blue-300 resize-none">{{ $certificate->date }}</textarea></td>
-                                <td class="border border-gray-300 px-4 py-2">
-                                    <button type="button" 
-                                            class="px-2 py-1 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700" 
-                                            onclick="window.open('{{ asset('storage/' . $certificate->image_path) }}', '_blank')">
-                                        View Image
-                                    </button>
-                                </td>
+                                {{-- <td class="border border-gray-300 px-4 py-2">
+                                    
+                                </td> --}}
                                 {{-- <td class="border border-gray-300 px-2 py-2 w-24">
                                     <button type="button" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 focus:ring focus:ring-blue-300" data-ocr="{{ $certificate->raw_text }}">View OCR Output</button>
                                 </td> --}}
@@ -305,6 +328,12 @@
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2">
                                     <div class="flex flex-col space-y-2 items-center">
+                                        <button type="button" 
+                                            class="bg-blue-500 text-white px-2 py-2 w-full rounded hover:bg-blue-600 focus:ring focus:ring-blue-300" 
+                                            onclick="openPopup(this.getAttribute('data-url'))"
+                                            data-url="{{ asset('storage/' . $certificate->image_path) }}">
+                                            View Image
+                                        </button>
                                         <button type="submit" class="bg-green-500 text-white px-2 py-2 w-full rounded hover:bg-green-600 focus:ring focus:ring-green-300">Update</button>
                                     </form>
                                     <form action="{{ route('certificate.delete', $certificate->id) }}" method="POST">
@@ -312,7 +341,6 @@
                                         @method('DELETE')
                                         <button type="submit" class="bg-red-500 text-white px-8 py-2.5 w-full rounded hover:bg-red-600 focus:ring focus:ring-red-300">Delete</button>
                                     </form>
-                                    <button type="button" class="bg-blue-500 text-white px-2 py-2 w-full rounded hover:bg-blue-600 focus:ring focus:ring-blue-300 ocr-result-btn" data-ocr="{{ $certificate->raw_text }}">OCR Output</button>
                                     </div>
                                 </td>
                             </tr>
@@ -345,7 +373,7 @@
 
     <!-- JavaScript -->
     {{-- <script src="{{ asset('javascript/autosizing.js') }}"></script> --}}
-    <script src="{{ asset('javascript/popupwindow.js') }}"></script>
+    <script src="{{ asset('javascript/imagepop.js') }}"></script>
     <script>
     window.basicRequirements = @json($basicRequirements);
     window.higherRequirements = @json($higherRequirements);
