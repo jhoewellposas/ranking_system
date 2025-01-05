@@ -16,14 +16,14 @@
             <!-- Upload Certificates Section -->
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Upload Certificates</h2>
-                <form action="{{ route('user.extractCertificateData') }}" method="post" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ route('user.extractCertificateData') }}" method="post" enctype="multipart/form-data" class="flex items-end space-x-4">
                     @csrf
-                    <div>
+                    <div class="flex-grow">
                         <label for="certificates" class="block text-gray-700 font-medium">Upload Certificate Image:</label>
                         <input type="file" name="certificates[]" id="certificates" accept="image/*" multiple required class="block w-full mt-2 border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <input type="hidden" name="ranking_application_id" value="{{ $application->id }}">
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700">Upload</button>
+                    <button type="submit" class="px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700">Upload</button>
                 </form>
             </div>
         </div>

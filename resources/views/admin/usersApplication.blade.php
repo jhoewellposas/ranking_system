@@ -256,7 +256,7 @@
 
 
     
-<div class="container mx-auto px-4 py-6">
+{{-- <div class="container mx-auto px-4 py-6"> --}}
     <!-- Certificates Table -->
     <div class="bg-white shadow-md rounded-lg p-6">
         <h5 class="text-lg font-bold mb-4">Uploaded Certificates</h5>
