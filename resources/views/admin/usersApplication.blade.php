@@ -291,7 +291,7 @@
                             <form action="{{ route('certificate.update', $certificate->id) }}" method="POST" class="space-y-2">
                                 @csrf    
                                 <td class="border border-gray-300 px-4 py-2">
-                                    <select name="category" id="category" required class="w-full rounded px-2 py-1 border-none focus:outline-none focus:ring focus:ring-blue-300 text-center" onchange="updateTooltip(this)">
+                                    <select name="category" class="category-select w-full rounded px-2 py-1 border-none focus:outline-none focus:ring focus:ring-blue-300 text-center" onchange="updateTooltip(this)">
                                         <option value="">Select a Category</option>
                                         <optgroup label="Productive Scholarship">
                                             <option value="seminar" {{ $certificate->category == 'seminar' ? 'selected' : '' }}>Seminar</option>
@@ -381,8 +381,29 @@
     <script src="{{ asset('javascript/rankRequirements.js') }}"></script>
     <script src="{{ asset('javascript/buttonConfirmations.js') }}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply colors and tooltips on initial load
+            const selects = document.querySelectorAll('.category-select');
+            selects.forEach(select => {
+                updateTooltip(select);  // Initialize tooltips and background colors
+                select.addEventListener('change', () => updateTooltip(select));  // Update on change
+            });
+        });
+        
         function updateTooltip(selectElement) {
+            // Update the tooltip text
             selectElement.title = selectElement.options[selectElement.selectedIndex].text;
+        
+            // Determine the background color based on the selection
+            const parentTd = selectElement.closest('td');
+            parentTd.classList.remove('bg-green-500', 'bg-red-500', 'bg-blue-300');  // Reset previous colors
+        
+            const categoryLabel = selectElement.options[selectElement.selectedIndex].parentElement.label;
+            if (categoryLabel === 'Productive Scholarship') {
+                parentTd.classList.add('bg-green-500');  // Apply green for Productive Scholarship
+            } else if (categoryLabel === 'Community Extension Service') {
+                parentTd.classList.add('bg-red-500');  // Apply red for Community Extension Service
+            }
         }
-    </script>
+        </script>
 </x-app-layout>
