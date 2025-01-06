@@ -48,10 +48,10 @@
                 <!-- Admin Links -->
                 @if (Auth::user()->role == 'admin')
                     <x-nav-link href="/admin/applications" :active="request()->routeIs('admin.usersApplications')">
-                        {{ __('Ranking Applications') }}
+                        {{ __('All Ranking Applications') }}
                     </x-nav-link>
                     <x-nav-link href="/admin/rankdistributions" :active="request()->routeIs('rankDistributions.index')">
-                        {{ __('Rank Distribution Chart') }}
+                        {{ __('Rank Percentage Distribution') }}
                     </x-nav-link>
                 @endif
                 </div>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\NewApplication;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
+use App\Models\User;
 use App\Models\RankingApplication;
 use App\Models\Certificate;
 
@@ -31,6 +33,12 @@ class UserController extends Controller
             'status' => 'pending',
             'total_points' => 0,
         ]);
+
+        // Notify all admins
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+        $admin->notify(new NewApplication($application));
+        }
 
         return redirect()->route('user.userApplications')->with('success', 'New ranking application created.');
     }
@@ -267,11 +275,12 @@ class UserController extends Controller
                 ],
                 [
                     'role' => 'user',
-                    'content' => "Extract the following details from this certificate text:\n\nText: {$text}\n\n1. Type of certificate\n2. Name of recipient\n3. Title of event\n4. Name of organization or sponsor\n5. Designation or role of recipient\n6. Count the number of days of the event\n7. Date of the event\n
+                    'content' => "Extract the following details from these certificate text:\n\nText: {$text}\n\n1. Type of certificate\n2. Name of recipient\n3. Title of event\n4. Name of organization or sponsor\n5. Designation or role of recipient\n6. Count the number of days of event\n7. Date of event\n
+                    
                     \nBased on the text, categorize the certificate into one of the following categories:
-                    [seminar, honors_awards, membership, scholarship_activities_a, scholarship_activities_b, service_students, service_department, service_institution, participation_organizations, involvement_department, unknown].
+                    [seminar, honors_awards, membership, scholarship_activities_a, scholarship_activities_b, service_students, service_department, service_institution, participation_organizations, involvement_department, unknown].\n
 
-                    Assign a score to the certificate based on its category using these rules:
+                    \nAssign a score to the certificate based on its category using these rules:
                     - **seminar**: Special Training: 5.0; Seminar: 0.25 for every half a day (assume 4 hours per half-day if not explicitly mentioned).
                     - **honors_awards**: 1.0.
                     - **membership**: Officer with more than 2 organizations: 2.0; Officer with 2 or fewer organizations: 1.0; Member with more than 2 organizations: 1.0; Member with 2 or fewer organizations: 0.5.
@@ -287,7 +296,7 @@ class UserController extends Controller
                     - Other Officers of an organization, club, etc.: 0.3.
                     - Member of an organization, club, etc.: 0.2.
                     - Judge: 0.25.
-                    - **unknown**: 0.0.
+                    - **unknown**: 0.0.\n
                     
                     Return the extracted data, category, and score in the following JSON format:
                     {

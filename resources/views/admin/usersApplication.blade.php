@@ -37,7 +37,7 @@
     <div class="teacher-info bg-white shadow-md rounded-lg p-6">
         <!-- Application Details -->
         <div class="bg-white rounded-lg p-6 flex flex-col">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Ranking Application #{{ $application->id }}</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">{{ $user->name }}'s Ranking Application #{{ $application->id }}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 flex-grow">
                 <div class="text-gray-700">
                     <strong>Email:</strong> <span>{{ $application->user->email }}</span>

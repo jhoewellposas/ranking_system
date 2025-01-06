@@ -54,6 +54,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //rank distribution
     Route::get('admin/rankdistributions', [RankDistributionController::class, 'index'])->name('rankDistributions.index');
     Route::post('admin/rankdistributions', [RankDistributionController::class, 'update'])->name('rankDistributions.update');
+    //notifications
+    Route::post('/notification/read/{id}', [AdminController::class, 'markNotificationAsRead'])->name('notification.read');
 });
 
 // Superadmin routes

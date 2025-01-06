@@ -18,7 +18,7 @@
         <!-- Styles -->
         <style>
             body::-webkit-scrollbar {
-              display: none; /* Hides scrollbar for WebKit browsers */
+              display; /* Hides scrollbar for WebKit browsers */
             }
           </style>
     </head>

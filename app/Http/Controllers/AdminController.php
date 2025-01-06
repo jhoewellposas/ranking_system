@@ -14,17 +14,31 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $notifications = auth()->user()->notifications()->latest()->get();
+
+        return view('admin.dashboard', compact('notifications'));
     }
 
     //Show all ranking applications for all users.
-    public function showAllUsersApplications()
+    public function showAllUsersApplications(Request $request)
     {
+        // Retrieve the search query
+        $query = $request->input('query');
+        
         // Retrieve all ranking applications ordered by the latest submission
-        $applications = RankingApplication::with('user')->latest()->get();
+        $applicationsQuery = RankingApplication::with('user')->latest();
+
+        if ($query) {
+            $applicationsQuery->whereHas('user', function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                  ->orWhere('email', 'like', "%{$query}%");
+            });
+        }
+    
+        $applications = $applicationsQuery->get();
 
         // Return the view with the applications
-        return view('admin.usersApplications', compact('applications'));
+        return view('admin.usersApplications', compact('applications', 'query'));
     }
 
     //View details of a specific ranking application of a specific user. 
@@ -526,4 +540,11 @@ public function viewSummary($teacherId)
         ]);
     }
 
+    public function markNotificationAsRead($id)
+    {
+        $notification = auth()->user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+
+        return redirect()->back();
+    }
 }

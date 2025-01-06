@@ -10,6 +10,12 @@
         <div class="w-full max-w-4xl px-4 py-6">
             <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">All Ranking Applications</h2>
 
+            <!-- Search Form -->
+        <form method="GET" action="{{ route('admin.usersApplications') }}" class="flex items-center space-x-2 mb-4">
+            <input type="text" name="query" value="{{ request('query')}}" placeholder="Search" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+        </form>
+
             <!-- Success Message -->
             @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center">

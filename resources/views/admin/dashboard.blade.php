@@ -5,13 +5,22 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in as Admin!") }}
-                </div>
-            </div>
-        </div>
+    <div class="notifications">
+        <h3>Notifications</h3>
+        <ul>
+            @foreach($notifications as $notification)
+                <li>
+                    New application from {{ $notification->data['user_name'] }} - 
+                    <a href="{{ route('admin.viewApplication', $notification->data['application_id']) }}">
+                        View Application
+                    </a>
+                    <form action="{{ route('notification.read', $notification->id) }}" method="POST">
+                        @csrf
+                        <button type="submit">Mark as Read</button>
+                    </form>
+                </li>
+            @endforeach
+        </ul>
     </div>
+
 </x-app-layout>

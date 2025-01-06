@@ -6,7 +6,7 @@
     </x-slot> --}}
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Rank Distribution Table</h1>
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Rank Percentage Distribution Table</h1>
         <form action="{{ route('rankDistributions.update') }}" method="POST" class="overflow-x-auto">
             @csrf
             <table class="min-w-full table-auto bg-white rounded-lg shadow-md text-sm text-center text-gray-700">
