@@ -286,6 +286,7 @@ class AdminController extends Controller
         ];
     }
 
+    /*
     //Update user details of a user of a specific ranking application
     public function updateUser(Request $request, $id)
     {
@@ -302,6 +303,40 @@ class AdminController extends Controller
         return redirect()->route('admin.viewApplication', ['id' => $rankingApplicationId])
             ->with('success', 'User updated successfully.');
     }
+    */
+
+    public function updateUser(Request $request, $id)
+    {
+    // Validate inputs
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'acad_attainment' => 'nullable|string|max:255',
+        'performance' => 'nullable|numeric',
+        'date_hired' => 'nullable|date',
+        'office' => 'nullable|string|max:255',
+        'experience' => 'nullable|numeric',
+        'present_rank' => 'nullable|string|max:255',
+        'next_rank' => 'nullable|string|max:255',
+        'status' => 'required|string|in:pending,approved',
+        'comments' => 'nullable|string|max:500',
+    ]);
+
+    // Update user details
+    $user = User::findOrFail($id);
+    $user->update($request->only('name', 'acad_attainment', 'performance', 'date_hired', 'office', 'experience', 'present_rank', 'next_rank'));
+
+    // Update ranking application status and comments
+    $rankingApplication = RankingApplication::findOrFail($request->input('ranking_application_id'));
+    $rankingApplication->update([
+        'status' => $request->input('status'),
+        'comments' => $request->input('comments'),
+    ]);
+
+    // Redirect back to the specific ranking application
+    return redirect()->route('admin.viewApplication', ['id' => $rankingApplication->id])
+        ->with('success', 'User and application details updated successfully.');
+    }
+
 
     //Update certificate data of a specific ranking application
     public function updateCertificate(Request $request, $id)

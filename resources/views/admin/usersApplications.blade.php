@@ -38,7 +38,7 @@
                             <div class="mt-2 flex justify-center">
                                 <a href="{{ route('admin.viewApplication', $application->id) }}" 
                                    class="inline-block bg-blue-500 text-white text-center px-6 py-1 rounded hover:bg-blue-600">
-                                    Open
+                                    View
                                 </a>
                             </div>
                         </div>

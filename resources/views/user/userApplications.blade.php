@@ -37,7 +37,7 @@
                                     <h5 class="text-sm text-gray-500">Ranking Application No: {{ $application->id }}</h5>
                                     <a href="{{ route('user.viewApplication', $application->id) }}" 
                                        class="inline-block px-8 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700">
-                                        Open
+                                        View
                                     </a>
                                 </div>
                             </div>

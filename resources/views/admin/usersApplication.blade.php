@@ -39,6 +39,9 @@
         <div class="bg-white rounded-lg p-6 flex flex-col">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">{{ $user->name }}'s Ranking Application #{{ $application->id }}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 flex-grow">
+                <form action="{{ route('user.update', ['id' => $application->user->id]) }}" method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @csrf
+                    <input type="hidden" name="ranking_application_id" value="{{ $application->id }}">
                 <div class="text-gray-700">
                     <strong>Email:</strong> <span>{{ $application->user->email }}</span>
                 </div>
@@ -64,11 +67,9 @@
                 </div>                
             </div>            
         </div>
-        {{-- <h1 class="text-xl font-bold mb-6 text-center">USER'S RANKING APPLICATION</h1> --}}
+
         <!-- Display User's Information -->
-        <form action="{{ route('user.update', ['id' => $application->user->id]) }}" method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @csrf
-            <input type="hidden" name="ranking_application_id" value="{{ $application->id }}">
+        
             <!-- Name -->
             <div>
                 <label for="name" class="text-sm font-semibold block mb-1">Name</label>

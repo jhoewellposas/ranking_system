@@ -7,7 +7,6 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Ranking Application #{{ $application->id }}</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <p><strong>Status:</strong> <span class="capitalize text-{{ $application->status === 'approved' ? 'green-600' : ($application->status === 'pending' ? 'yellow-600' : 'red-600') }}">{{ ucfirst($application->status) }}</span></p>
-                    <p><strong>Total Points:</strong> {{ $application->total_points }}</p>
                     <p><strong>Comments:</strong> {{ $application->comments ?? 'No comments yet' }}</p>
                     <p><strong>Created On:</strong> {{ $application->created_at->format('m/d/Y') }}</p>
                 </div>
