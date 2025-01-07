@@ -13,8 +13,9 @@
                 font-size: 14px;
                 color: #000;
             }
-            .teacher-info {
+            .teacher-info, .table-content, .signature-form {
                 display: block;
+                page-break-inside: avoid; /* Avoid breaking components across pages */
             }
             .print:shadow-none {
                 box-shadow: none !important;
@@ -24,6 +25,14 @@
             }
             .no-print {
                 display: none;
+            }
+            .approved-line {
+                text-align: left; /* Align text to the left */
+                margin-left: 0; /* Ensure it starts at the very left */
+                transform: translateX(-12%);
+            }
+            .grid-container {
+                width: 100%;
             }
         }
     </style>
@@ -82,7 +91,7 @@
                     <td class="p-2 border-b border-gray-300">{{ $communityExtensionPoints }}</td>
                 </tr>
                 <tr>
-                    <td class="p-2 font-bold">Total</td>
+                    <td class="p-2 font-bold">Total (Max of 70 points)</td>
                     <td class="p-2 font-bold">{{ $totalPoints }}</td>
                 </tr>
             </tbody>
@@ -123,7 +132,14 @@
         <div class="grid-item"></div>
         <div class="grid-item name-signature3">Name & Signature of Chair</div>
         <div class="grid-item"></div>
+    </div>
 
+    <div class="grid grid-cols-3 gap-12">
+        <!-- Row 5 -->
+        <div class="grid-item approved-line">Approved by:</div> <!-- Move 'Approved' to the first column -->
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+    
         <!-- Row 6 -->
         <div class="grid-item approved-container">
             <span>President</span>
@@ -134,12 +150,14 @@
             <span>Date</span>
             <!-- Line will be added here by CSS -->
         </div>
+    </div>    
+    
 
         <!-- Row 7 -->
         {{-- <div class="grid-item president">President</div>
         <div class="grid-item"></div>
         <div class="grid-item"></div> --}}
-    </div>
+    
 </div>
 
 </x-app-layout>

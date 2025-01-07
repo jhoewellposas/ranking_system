@@ -27,21 +27,25 @@
             @if ($applications->count() > 0)
                 <div class="space-y-4">
                     @foreach ($applications as $application)
-                        <div class="bg-white shadow-md rounded-lg p-4">
+                    <div class="bg-white shadow-md rounded-lg p-4 flex justify-between items-center">
+                        <div>
                             <h5 class="text-lg font-bold text-gray-800">User: {{ $application->user->name }}</h5>
-                            <p class="text-sm text-gray-600">Email: {{ $application->user->email }}</p>
-                            <p class="text-sm text-gray-600">Date of application: {{ $application->created_at->format('m/d/Y') }}</p>
-                            <p class="text-sm text-gray-600">Status: 
+                            <p class="text-gray-600">Email: {{ $application->user->email }}</p>
+                            <p class="text-gray-600">Date of application: {{ $application->created_at->format('m/d/Y') }}</p>
+                            <p class="text-gray-600">Status: 
                                 <span class="font-medium text-gray-800">{{ ucfirst($application->status) }}</span>
                             </p>
-                            <h5 class="text-sm font-medium text-gray-600 mt-2">Ranking Application No: {{ $application->id }}</h5>
-                            <div class="mt-2 flex justify-center">
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-medium text-gray-600">Ranking Application No: {{ $application->id }}</h5>
+                            <div class="mt-2">
                                 <a href="{{ route('admin.viewApplication', $application->id) }}" 
                                    class="inline-block bg-blue-500 text-white text-center px-6 py-1 rounded hover:bg-blue-600">
                                     View
                                 </a>
                             </div>
                         </div>
+                    </div>                    
                     @endforeach
                 </div>
             @else

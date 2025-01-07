@@ -36,37 +36,37 @@
 {{-- <div class="user-table-info container mx-auto p-4"> --}}
     <div class="teacher-info bg-white shadow-md rounded-lg p-6">
         <!-- Application Details -->
-        <div class="bg-white rounded-lg p-6 flex flex-col">
+        <div class="bg-white rounded-lg p-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">{{ $user->name }}'s Ranking Application #{{ $application->id }}</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 flex-grow">
                 <form action="{{ route('user.update', ['id' => $application->user->id]) }}" method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @csrf
                     <input type="hidden" name="ranking_application_id" value="{{ $application->id }}">
-                <div class="text-gray-700">
-                    <strong>Email:</strong> <span>{{ $application->user->email }}</span>
-                </div>
-                <div class="text-gray-700">
-                    <strong>Created On:</strong> <span>{{ $application->created_at->format('m/d/Y') }}</span>
-                </div>
-                <div class="text-gray-700 flex items-center">
-                    <strong>Application Status:</strong>
-                    <div class="ml-4 flex items-center">
-                        <label class="flex items-center mr-4">
-                            <input type="radio" name="status" value="pending" class="text-yellow-600 focus:ring-yellow-500 border-gray-300" {{ $application->status === 'pending' ? 'checked' : '' }}>
-                            <span class="ml-2 text-gray-700">Pending</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="status" value="approved" class="text-green-600 focus:ring-green-500 border-gray-300" {{ $application->status === 'approved' ? 'checked' : '' }}>
-                            <span class="ml-2 text-gray-700">Approved</span>
-                        </label>
+
+                <div class="col-span-1 md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="text-gray-700">
+                        <strong>Email:</strong> <span>{{ $application->user->email }}</span>
                     </div>
-                </div>                               
-                <div class="flex items-start space-x-4">
-                    <strong class="mt-1">Comments:</strong>
-                    <textarea name="comments" id="comments" class="flex-1 form-textarea mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" rows="3">{{ $application->comments ?? '' }}</textarea>
-                </div>                
-            </div>            
-        </div>
+                    <div class="text-gray-700">
+                        <strong>Created On:</strong> <span>{{ $application->created_at->format('m/d/Y') }}</span>
+                    </div>
+                    <div class="text-gray-700 flex items-center">
+                        <strong>Application Status:</strong>
+                        <div class="ml-4 flex items-center">
+                            <label class="flex items-center mr-4">
+                                <input type="radio" name="status" value="pending" class="text-yellow-600 focus:ring-yellow-500 border-gray-300" {{ $application->status === 'pending' ? 'checked' : '' }}>
+                                <span class="ml-2 text-gray-700">Pending</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="status" value="approved" class="text-green-600 focus:ring-green-500 border-gray-300" {{ $application->status === 'approved' ? 'checked' : '' }}>
+                                <span class="ml-2 text-gray-700">Approved</span>
+                            </label>
+                        </div>
+                    </div>                               
+                    <div class="col-span-3 flex items-start space-x-4">
+                        <strong class="mt-1">Comments:</strong>
+                        <textarea name="comments" id="comments" class="flex-1 form-textarea mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm resize-none" rows="2">{{ $application->comments ?? '' }}</textarea>
+                    </div>                
+                </div>                           
 
         <!-- Display User's Information -->
         
@@ -252,6 +252,7 @@
             </div>
         </form>
     </div>
+</div>
 {{-- </div> --}}
 
 
