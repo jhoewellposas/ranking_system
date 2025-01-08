@@ -277,8 +277,18 @@ class UserController extends Controller
                     'role' => 'user',
                     'content' => "Extract the following details from these certificate text:\n\nText: {$text}\n\n1. Type of certificate\n2. Name of recipient\n3. Title of event\n4. Name of organization or sponsor\n5. Designation or role of recipient\n6. Count the number of days of event\n7. Date of event\n
                     
-                    \nBased on the text, categorize the certificate into one of the following categories:
-                    [seminar, honors_awards, membership, scholarship_activities_a, scholarship_activities_b, service_students, service_department, service_institution, participation_organizations, involvement_department, unknown].\n
+                    \nCategorize the certificate based on the text using these rules:
+		            - **seminar**: participation|participant|attendance|attending|training|conference|congress|completion|completed
+                    - **honors_awards**: runner-up|placer
+                    - **membership**: member|officer
+                    - **scholarship_activities_a**: adviser|panelist|panel|workbook|author of workbook
+                    - **scholarship_activities_b**: judge|coach|consultant|trainer|facilitator|researcher|speaker|book|author of book
+                    - **service_students**: student service|service to students|organization
+                    - **service_department**: departmental service|service to derpatment|organization
+                    - **service_institution**: institutional service|service to institution|organized by|sponsored by
+                    - **participation_organizations**: active participation|participation in an organization|organizations
+                    - **involvement_department**: involvement in department|run and row|build|bike and plant
+                    - **unknown**: 0.0.\n
 
                     \nAssign a score to the certificate based on its category using these rules:
                     - **seminar**: Special Training: 5.0; Seminar: 0.25 for every half a day (assume 4 hours per half-day if not explicitly mentioned).

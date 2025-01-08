@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('type');
             $table->string('name');
-            $table->string('title');
+            $table->string('title', 500);
             $table->string('organization')->nullable();
             $table->string('designation')->nullable();
             $table->float('days')->nullable();

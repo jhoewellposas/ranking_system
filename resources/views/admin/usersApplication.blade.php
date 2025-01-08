@@ -318,7 +318,7 @@
                                 <td class="border border-gray-300 px-2 py-2 w-24">
                                     <input type="text" name="days" value="{{ $certificate->days }}" required class="w-full rounded px-2 py-1 border-none focus:outline-none focus:ring focus:ring-blue-300 text-center">
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2"><textarea name="designation" class="w-full rounded p-1 border-none focus:outline-none focus:ring focus:ring-blue-300 resize-none">{{ $certificate->date }}</textarea></td>
+                                <td class="border border-gray-300 px-4 py-2"><textarea name="date" class="w-full rounded p-1 border-none focus:outline-none focus:ring focus:ring-blue-300 resize-none">{{ $certificate->date }}</textarea></td>
                                 {{-- <td class="border border-gray-300 px-4 py-2">
                                     
                                 </td> --}}
