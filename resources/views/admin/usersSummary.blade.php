@@ -142,7 +142,7 @@
     
         <!-- Row 6 -->
         <div class="grid-item approved-container">
-            <span>President</span>
+            <span>University President</span>
             <!-- Line will be added here by CSS -->
         </div>
         <div class="grid-item"></div>

@@ -7,7 +7,7 @@
 
     <!-- User Details -->
     <div class="bg-white shadow-md rounded-lg p-6 flex flex-col">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">User Details</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Teacher Rank and Information</h2>
         <div class="flex flex-col space-y-2">
             <p class="text-gray-700 flex items-center"><strong>Name:</strong> <span class="ml-2">{{ $user->name }}</span></p>
             <p class="text-gray-700 flex items-center"><strong>Academic Attainment:</strong> <span class="ml-2">{{ $user->acad_attainment }}</span></p>

@@ -269,6 +269,12 @@
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
         </form>
 
+        <!--Legend-->
+        <div class="ml-10">
+            <span class="flex items-center text-sm font-medium text-black-900 dark:text-black me-3"><span class="flex w-2.5 h-2.5 bg-green-500 rounded-full me-1.5 flex-shrink-0"></span>Productive Scholarship</span>
+            <span class="flex items-center text-sm font-medium text-gray-900 dark:text-black me-3"><span class="flex w-2.5 h-2.5 bg-red-500 rounded-full me-1.5 flex-shrink-0"></span>Community Extension Service</span>
+        </div>
+
         <!-- Table -->
         <div class="overflow-auto">
             <table class="w-full border-collapse border border-gray-300 text-sm">
