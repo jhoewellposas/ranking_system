@@ -32,6 +32,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/application/{id}', [UserController::class, 'viewApplication'])->name('user.viewApplication');
     // Upload and extract
     Route::post('/user/extract', [UserController::class, 'extractCertificateData'])->name('user.extractCertificateData');
+    // Update a certificate in a ranking application
+    Route::post('/user/certificate/update/{id}', [UserController::class, 'updateCertificate'])->name('user.certificate.update');
     // Delete a certificate in a ranking application
     Route::delete('/user/certificate/delete/{id}', [UserController::class, 'deleteCertificate'])->name('user.certificate.delete');
     //summary

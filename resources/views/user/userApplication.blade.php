@@ -13,6 +13,8 @@
             </div>
             
             <!-- Upload Certificates Section -->
+            {{-- Upload functionality is disabled if the application status is "approved" --}}
+            @if ($application->status !== 'approved')
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Upload Certificates</h2>
                 <form action="{{ route('user.extractCertificateData') }}" method="post" enctype="multipart/form-data" class="flex items-end space-x-4">
@@ -26,7 +28,13 @@
                 </form>
             </div>
         </div>
-        
+        @else
+        <div class="bg-gray-200 shadow-lg rounded-lg p-6 text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Upload Disabled</h2>
+            <p class="text-gray-700">Ranking application has been approved.</p>
+        </div>
+        @endif
+
         <!-- Back to Applications Button -->
         <div class="mt-6">
             <a href="{{ route('user.userApplications') }}" class="inline-block px-4 py-2 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600">Back to Applications</a>
@@ -58,6 +66,8 @@
                     <tbody>
                         @forelse ($certificates as $certificate)
                             <tr class="border-t border-gray-200 text-center">
+                                <form action="{{ route('user.certificate.update', $certificate->id) }}" method="POST">
+                                @csrf
                                 <td class="px-4 py-2">{{ $certificate->category }}</td>
                                 <td class="px-4 py-2">{{ $certificate->type }}</td>
                                 <td class="px-4 py-2">{{ $certificate->title }}</td>
@@ -77,13 +87,13 @@
                                             data-url="{{ asset('storage/' . $certificate->image_path) }}">
                                             View Image
                                         </button>
-                                        <form action="" method="POST">
-                                            @csrf
-                                            @method('PUT')
+                                            
                                             <button type="submit" class="px-3 py-2.5 bg-green-500 text-white font-semibold w-full rounded hover:bg-green-600 focus:ring focus:ring-green-300">
                                                 Update
                                             </button>
                                         </form>
+                                        {{-- Delete functionality is disabled if the application status is "approved" --}}
+                                        @if ($application->status !== 'approved')
                                         <form action="{{ route('user.certificate.delete', $certificate->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -91,6 +101,11 @@
                                                 Delete
                                             </button>
                                         </form>
+                                        @else
+                                        <button type="button" class="px-4 py-2 bg-gray-400 text-white font-semibold w-full rounded" disabled>
+                                            Delete
+                                        </button>
+                                        @endif
                                     </div>
                                 </td>                                
                             </tr>

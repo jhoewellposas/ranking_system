@@ -356,6 +356,21 @@ class UserController extends Controller
         ->with('success', 'Certificates uploaded and processed successfully.');
     }
 
+    //Update certificate data of a specific ranking application
+    public function updateCertificate(Request $request, $id)
+    {
+        // Find the certificate
+        $certificate = Certificate::findOrFail($id);
+
+        // Update certificate details
+        $certificate->update($request->only('category', 'type', 'name', 'title', 'organization', 'designation', 'days', 'date', 'points'));
+
+        // Redirect back to the specific ranking application
+        return redirect()->route('user.viewApplication', ['id' => $certificate->ranking_application_id])
+            ->with('success', 'Certificate updated successfully.');
+    }
+
+    //Delete certificate image and certificate data of a specific ranking application
     public function deleteCertificate($id)
     {
         // Find the certificate
