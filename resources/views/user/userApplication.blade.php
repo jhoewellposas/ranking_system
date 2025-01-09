@@ -41,7 +41,7 @@
         </div>
         
         <!-- Certificates Table (Unaffected by Grid Layout) -->
-        <div class="mt-8 bg-white shadow-lg rounded-lg p-6">
+        <div class="col-span-1 md:col-span-2 bg-white shadow-lg rounded-lg p-6">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Uploaded Certificates</h3>
             <form method="GET" action="{{ route('user.viewApplication', $application->id) }}" class="mb-4 flex flex-col sm:flex-row gap-4 ml-auto justify-end">
                 <input type="text" name="query" value="{{ $query }}" placeholder="Search certificates..." class="block w-full max-w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
